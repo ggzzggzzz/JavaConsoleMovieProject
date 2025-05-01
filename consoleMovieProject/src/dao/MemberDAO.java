@@ -12,8 +12,9 @@ import vo.MemberVO;
 
 public class MemberDAO {
 
+	// 회원가입 기능
     public void signup(MemberVO vo) {
-        String sql = "INSERT INTO members(member_id, password, nickname, is_admin) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO MEMBERS(MEMBER_ID, PASSWORD, NICKNAME, IS_ADMIN) VALUES (?, ?, ?, ?)";
         Connection conn = null;
         PreparedStatement pstmt = null;
         		
@@ -29,20 +30,21 @@ public class MemberDAO {
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-			JDBCClose.close(conn, pstmt);
-		}
+        } finally {
+            JDBCClose.close(conn, pstmt);
+        }
     }
 
+    // 로그인 기능
     public MemberVO login(String id, String pw) {
-        String sql = "SELECT * FROM members WHERE member_id = ? AND password = ?";
+        String sql = "SELECT * FROM MEMBERS WHERE MEMBER_ID = ? AND PASSWORD = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
         MemberVO vo = null;
 
         try {
             conn = new ConnectionFactory().getConnection();
-             pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(sql);
          
             pstmt.setString(1, id);
             pstmt.setString(2, pw);
@@ -59,22 +61,23 @@ public class MemberDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-			JDBCClose.close(conn, pstmt);
-		}
+        } finally {
+            JDBCClose.close(conn, pstmt);
+        }
 
         return vo;
     }
 
+    // 모든 멤버 조회(관리자용)
     public List<MemberVO> selectAll() {
         List<MemberVO> list = new ArrayList<>();
-        String sql = "SELECT * FROM members ORDER BY created_at DESC";
+        String sql = "SELECT * FROM MEMBERS ORDER BY CREATED_AT DESC";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
             conn = new ConnectionFactory().getConnection();
-             pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
          
             while (rs.next()) {
@@ -89,15 +92,16 @@ public class MemberDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-			JDBCClose.close(conn, pstmt);
-		}
+        } finally {
+            JDBCClose.close(conn, pstmt);
+        }
 
         return list;
     }
     
+    //닉네임 수정
     public void updateNickname(String memberId, String newNickname) {
-        String sql = "UPDATE members SET nickname = ? WHERE member_id = ?";
+        String sql = "UPDATE MEMBERS SET NICKNAME = ? WHERE MEMBER_ID = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -115,8 +119,9 @@ public class MemberDAO {
         }
     }
     
+    //비번 변경
     public void updatePassword(String memberId, String newPassword) {
-        String sql = "UPDATE members SET password = ? WHERE member_id = ?";
+        String sql = "UPDATE MEMBERS SET PASSWORD = ? WHERE MEMBER_ID = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -134,8 +139,9 @@ public class MemberDAO {
         }
     }
     
+    // 회원 탈퇴
     public void deleteMember(String memberId) {
-        String sql = "DELETE FROM members WHERE member_id = ?";
+        String sql = "DELETE FROM MEMBERS WHERE MEMBER_ID = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -152,8 +158,9 @@ public class MemberDAO {
         }
     }
     
+    //특정 회원 정보 조회
     public MemberVO selectById(String memberId) {
-        String sql = "SELECT * FROM members WHERE member_id = ?";
+        String sql = "SELECT * FROM MEMBERS WHERE MEMBER_ID = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
         MemberVO vo = null;

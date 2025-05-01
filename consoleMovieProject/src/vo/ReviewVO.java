@@ -1,6 +1,6 @@
 package vo;
 
-public class ReviewsVO {
+public class ReviewVO {
     private int reviewId;
     private String memberId;
     private int movieId;
@@ -9,9 +9,9 @@ public class ReviewsVO {
     private int likeCount;
     private String createdAt;
 
-    public ReviewsVO() {}
+    public ReviewVO() {}
 
-    public ReviewsVO(int reviewId, String memberId, int movieId, double rating,
+    public ReviewVO(int reviewId, String memberId, int movieId, double rating,
                     String content, int likeCount, String createdAt) {
         this.reviewId = reviewId;
         this.memberId = memberId;

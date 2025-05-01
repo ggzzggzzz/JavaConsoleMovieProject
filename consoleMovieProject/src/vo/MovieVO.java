@@ -1,6 +1,6 @@
 package vo;
 
-public class MoviesVO {
+public class MovieVO {
     private int movieId;
     private String title;
     private String genre;
@@ -10,9 +10,9 @@ public class MoviesVO {
     private String synopsis;
     private String createdAt;
 
-    public MoviesVO() {}
+    public MovieVO() {}
 
-    public MoviesVO(int movieId, String title, String genre, String director,
+    public MovieVO(int movieId, String title, String genre, String director,
                    int runningTime, String releaseDate, String synopsis, String createdAt) {
         this.movieId = movieId;
         this.title = title;

@@ -1,6 +1,6 @@
 package vo;
 
-public class ReservationsVO {
+public class ReservationVO {
     private int reservationId;
     private String memberId;
     private int movieId;
@@ -11,9 +11,9 @@ public class ReservationsVO {
     private String reservationStatus;
     private String reservedAt;
 
-    public ReservationsVO() {}
+    public ReservationVO() {}
 
-    public ReservationsVO(int reservationId, String memberId, int movieId, String showTime,
+    public ReservationVO(int reservationId, String memberId, int movieId, String showTime,
                          String seatNumber, String paymentMethod, int paymentAmount,
                          String reservationStatus, String reservedAt) {
         this.reservationId = reservationId;

@@ -1,14 +1,14 @@
 package vo;
 
-public class WishlistsVO {
+public class WishlistVO {
     private int wishlistId;
     private String memberId;
     private int movieId;
     private String createdAt;
 
-    public WishlistsVO() {}
+    public WishlistVO() {}
 
-    public WishlistsVO(int wishlistId, String memberId, int movieId, String createdAt) {
+    public WishlistVO(int wishlistId, String memberId, int movieId, String createdAt) {
         this.wishlistId = wishlistId;
         this.memberId = memberId;
         this.movieId = movieId;
