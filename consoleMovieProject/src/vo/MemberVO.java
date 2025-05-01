@@ -17,7 +17,7 @@ public class MemberVO {
         this.isAdmin = isAdmin;
         this.createdAt = createdAt;
     }
-
+//asdasd
     public String getMemberId() {
         return memberId;
     }
