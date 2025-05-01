@@ -7,7 +7,7 @@ public class MemberVO {
     private String isAdmin; 
     private String createdAt; 
     
-    //
+    /////
     public MemberVO() {}
 
     public MemberVO(String memberId, String password, String nickname, String isAdmin, String createdAt) {
