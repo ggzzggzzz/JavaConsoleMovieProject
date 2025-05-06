@@ -11,11 +11,20 @@ import util.JDBCClose;
 import vo.ReviewVO;
 
 public class ReviewDAO {
+	
+	 private static final ReviewDAO instance = new ReviewDAO();
+
+	    private ReviewDAO() {}
+
+	    public static ReviewDAO getInstance() {
+	        return instance;
+	    }
 
     // 리뷰 작성
     public void insert(ReviewVO vo) {
-        String sql = "INSERT INTO REVIEWS(REVIEW_ID, MEMBER_ID, MOVIE_ID, RATING, CONTENT) "
-                   + "VALUES (?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO REVIEWS(REVIEW_ID, MEMBER_ID, MOVIE_ID, RATING, CONTENT) "
+    	           + "VALUES (seq_review_id.NEXTVAL, ?, ?, ?, ?)";
+
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -23,11 +32,11 @@ public class ReviewDAO {
             conn = new ConnectionFactory().getConnection();
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, vo.getReviewId());
-            pstmt.setString(2, vo.getMemberId());
-            pstmt.setInt(3, vo.getMovieId());
-            pstmt.setDouble(4, vo.getRating());
-            pstmt.setString(5, vo.getContent());
+            pstmt.setString(1, vo.getMemberId());
+            pstmt.setInt(2, vo.getMovieId());
+            pstmt.setDouble(3, vo.getRating());
+            pstmt.setString(4, vo.getContent());
+
 
             pstmt.executeUpdate();
         } catch (Exception e) {

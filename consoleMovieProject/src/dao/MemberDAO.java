@@ -11,6 +11,14 @@ import util.JDBCClose;
 import vo.MemberVO;
 
 public class MemberDAO {
+	
+	  private static final MemberDAO instance = new MemberDAO();
+
+	    private MemberDAO() {}
+
+	    public static MemberDAO getInstance() {
+	        return instance;
+	    }
 
 	// 회원가입 기능
     public void signup(MemberVO vo) {

@@ -12,9 +12,18 @@ import vo.WishlistVO;
 
 public class WishlistDAO {
 
+	private static final WishlistDAO instance = new WishlistDAO();
+
+    private WishlistDAO() {}
+
+    public static WishlistDAO getInstance() {
+        return instance;
+    }
+	
     // 찜 추가
     public void insert(WishlistVO vo) {
-        String sql = "INSERT INTO WISHLISTS(WISHLIST_ID, MEMBER_ID, MOVIE_ID) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO WISHLISTS(WISHLIST_ID, MEMBER_ID, MOVIE_ID) "
+                   + "VALUES (seq_wishlist_id.NEXTVAL, ?, ?)";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -22,9 +31,8 @@ public class WishlistDAO {
             conn = new ConnectionFactory().getConnection();
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, vo.getWishlistId());
-            pstmt.setString(2, vo.getMemberId());
-            pstmt.setInt(3, vo.getMovieId());
+            pstmt.setString(1, vo.getMemberId());
+            pstmt.setInt(2, vo.getMovieId());
 
             pstmt.executeUpdate();
         } catch (Exception e) {
@@ -33,6 +41,7 @@ public class WishlistDAO {
             JDBCClose.close(conn, pstmt);
         }
     }
+
 
     // 찜 삭제
     public void delete(String memberId, int movieId) {

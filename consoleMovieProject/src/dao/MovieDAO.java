@@ -11,33 +11,41 @@ import util.JDBCClose;
 import vo.MovieVO;
 
 public class MovieDAO {
+	
+	 private static final MovieDAO instance = new MovieDAO();
+
+	    private MovieDAO() {}
+
+	    public static MovieDAO getInstance() {
+	        return instance;
+	    }
 
 	// 영화 등록(관리자용)
-    public void insert(MovieVO vo) {
-        String sql = "INSERT INTO MOVIES(MOVIE_ID, TITLE, GENRE, DIRECTOR, RUNNING_TIME, RELEASE_DATE, SYNOPSIS) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+	    public void insert(MovieVO vo) {
+	        String sql = "INSERT INTO MOVIES(MOVIE_ID, TITLE, GENRE, DIRECTOR, RUNNING_TIME, RELEASE_DATE, SYNOPSIS) "
+	                   + "VALUES (seq_movie_id.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+	        Connection conn = null;
+	        PreparedStatement pstmt = null;
 
-        try {
-            conn = new ConnectionFactory().getConnection();
-            pstmt = conn.prepareStatement(sql);
+	        try {
+	            conn = new ConnectionFactory().getConnection();
+	            pstmt = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, vo.getMovieId());
-            pstmt.setString(2, vo.getTitle());
-            pstmt.setString(3, vo.getGenre());
-            pstmt.setString(4, vo.getDirector());
-            pstmt.setInt(5, vo.getRunningTime());
-            pstmt.setString(6, vo.getReleaseDate());
-            pstmt.setString(7, vo.getSynopsis());
+	            pstmt.setString(1, vo.getTitle());
+	            pstmt.setString(2, vo.getGenre());
+	            pstmt.setString(3, vo.getDirector());
+	            pstmt.setInt(4, vo.getRunningTime());
+	            pstmt.setString(5, vo.getReleaseDate());
+	            pstmt.setString(6, vo.getSynopsis());
 
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            JDBCClose.close(conn, pstmt);
-        }
-    }
+	            pstmt.executeUpdate();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            JDBCClose.close(conn, pstmt);
+	        }
+	    }
+
 
     // 영화삭제(관리자용)
     public void delete(int movieId) {
@@ -61,7 +69,7 @@ public class MovieDAO {
     // 모든영화 조회
     public List<MovieVO> selectAll() {
         List<MovieVO> list = new ArrayList<>();
-        String sql = "SELECT * FROM MOVIES ORDER BY CREATED_AT DESC";
+        String sql = "SELECT * FROM MOVIES ";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -79,7 +87,7 @@ public class MovieDAO {
                     rs.getInt("running_time"),
                     rs.getString("release_date"),
                     rs.getString("synopsis"),
-                    rs.getString("created_at")
+                    rs.getDate("created_at").toString()
                 );
                 list.add(vo);
             }

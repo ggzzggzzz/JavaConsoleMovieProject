@@ -12,32 +12,40 @@ import vo.ReservationVO;
 
 public class ReservationDAO {
 
+	 private static final ReservationDAO instance = new ReservationDAO();
+
+	    private ReservationDAO() {}
+
+	    public static ReservationDAO getInstance() {
+	        return instance;
+	    }
+	
     // 1. 예매 등록
-    public void insert(ReservationVO vo) {
-        String sql = "INSERT INTO RESERVATIONS(RESERVATION_ID, MEMBER_ID, MOVIE_ID, SHOW_TIME, SEAT_NUMBER, PAYMENT_METHOD, PAYMENT_AMOUNT) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+	    public void insert(ReservationVO vo) {
+	        String sql = "INSERT INTO RESERVATIONS(RESERVATION_ID, MEMBER_ID, MOVIE_ID, SHOW_TIME, SEAT_NUMBER, PAYMENT_METHOD, PAYMENT_AMOUNT) "
+	                   + "VALUES (seq_reservation_id.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+	        Connection conn = null;
+	        PreparedStatement pstmt = null;
 
-        try {
-            conn = new ConnectionFactory().getConnection();
-            pstmt = conn.prepareStatement(sql);
+	        try {
+	            conn = new ConnectionFactory().getConnection();
+	            pstmt = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, vo.getReservationId());
-            pstmt.setString(2, vo.getMemberId());
-            pstmt.setInt(3, vo.getMovieId());
-            pstmt.setString(4, vo.getShowTime());  // 날짜는 String으로 처리
-            pstmt.setString(5, vo.getSeatNumber());
-            pstmt.setString(6, vo.getPaymentMethod());
-            pstmt.setInt(7, vo.getPaymentAmount());
+	            pstmt.setString(1, vo.getMemberId());
+	            pstmt.setInt(2, vo.getMovieId());
+	            pstmt.setString(3, vo.getShowTime());
+	            pstmt.setString(4, vo.getSeatNumber());
+	            pstmt.setString(5, vo.getPaymentMethod());
+	            pstmt.setInt(6, vo.getPaymentAmount());
 
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            JDBCClose.close(conn, pstmt);
-        }
-    }
+	            pstmt.executeUpdate();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            JDBCClose.close(conn, pstmt);
+	        }
+	    }
+
 
     // 2. 예매 취소 (상태만 변경)
     public void cancel(int reservationId) {
