@@ -14,7 +14,7 @@ public class JDBCClose {
 				e.printStackTrace();
 			}
 		}
-		
+		//
 		if(conn != null) {
 			try {
 				conn.close();
