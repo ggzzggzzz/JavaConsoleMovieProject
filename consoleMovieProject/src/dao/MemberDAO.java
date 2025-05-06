@@ -146,7 +146,32 @@ public class MemberDAO {
             JDBCClose.close(conn, pstmt);
         }
     }
-    
+    //비밀번호 확인
+    public boolean checkPassword(String memberId, String currentPassword) {
+        String sql = "SELECT COUNT(*) FROM members WHERE member_id = ? AND password = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        boolean valid = false;
+
+        try {
+            conn = new ConnectionFactory().getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            pstmt.setString(2, currentPassword);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                valid = rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCClose.close(conn, pstmt);
+        }
+
+        return valid;
+    }
+
     // 회원 탈퇴
     public void deleteMember(String memberId) {
         String sql = "DELETE FROM MEMBERS WHERE MEMBER_ID = ?";

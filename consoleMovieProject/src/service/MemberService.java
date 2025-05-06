@@ -36,6 +36,12 @@ public class MemberService {
     public void updatePassword(String memberId, String newPassword) {
         memberDao.updatePassword(memberId, newPassword);
     }
+    
+    public boolean isCurrentPasswordCorrect(String memberId, String currentPassword) {
+       
+        return memberDao.checkPassword(memberId, currentPassword);
+    }
+
 
     public void deleteMember(String memberId) {
         memberDao.deleteMember(memberId);
