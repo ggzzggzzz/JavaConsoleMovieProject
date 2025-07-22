@@ -11,11 +11,19 @@ public class ConnectionFactory {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";  
+			String url = "jdbc:oracle:thin:@localhost:1521:xe"; // 슬래시(/) 사용
+
+
+
 			String user 	= "hr";
 			String password = "hr";
 			
 			conn = DriverManager.getConnection(url, user, password);
+			 if (conn == null) {
+			        System.out.println("❌ DB 연결 실패: conn is null");
+			    } else {
+			        System.out.println("✅ DB 연결 성공");
+			    }
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

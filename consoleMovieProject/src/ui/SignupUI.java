@@ -1,28 +1,23 @@
 package ui;
 
-import java.util.Scanner;
+import service.IMemberService;
 import service.MemberService;
 import vo.MemberVO;
 
-public class SignupUI {
+public class SignupUI extends BaseUI {
 
-    private MemberService memberService = MemberService.getInstance();
-    private Scanner sc = new Scanner(System.in);
+    private IMemberService memberService = MemberService.getInstance();
 
+    @Override
     public void start() {
         System.out.println();
         System.out.println("╔════════════════════════════╗");
         System.out.println("║       📝 회원가입 페이지        ║");
         System.out.println("╚════════════════════════════╝");
 
-        System.out.print("🆔 아이디 입력     : ");
-        String id = sc.nextLine();
-
-        System.out.print("🔑 비밀번호 입력   : ");
-        String pw = sc.nextLine();
-
-        System.out.print("🧑‍💻 닉네임 입력     : ");
-        String nickname = sc.nextLine();
+        String id = getString("🆔 아이디 입력     : ");
+        String pw = getString("🔑 비밀번호 입력   : ");
+        String nickname = getString("🧑‍💻 닉네임 입력     : ");
 
         MemberVO vo = new MemberVO(id, pw, nickname, "N", null);
         memberService.signup(vo);

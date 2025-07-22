@@ -10,7 +10,7 @@ import util.ConnectionFactory;
 import util.JDBCClose;
 import vo.MemberVO;
 
-public class MemberDAO {
+public class MemberDAO implements IMemberDAO {
 	
 	  private static final MemberDAO instance = new MemberDAO();
 
@@ -21,6 +21,7 @@ public class MemberDAO {
 	    }
 
 	// 회원가입 기능
+    @Override
     public void signup(MemberVO vo) {
         String sql = "INSERT INTO MEMBERS(MEMBER_ID, PASSWORD, NICKNAME, IS_ADMIN) VALUES (?, ?, ?, ?)";
         Connection conn = null;
@@ -44,6 +45,7 @@ public class MemberDAO {
     }
 
     // 로그인 기능
+    @Override
     public MemberVO login(String id, String pw) {
         String sql = "SELECT * FROM MEMBERS WHERE MEMBER_ID = ? AND PASSWORD = ?";
         Connection conn = null;
@@ -77,6 +79,7 @@ public class MemberDAO {
     }
 
     // 모든 멤버 조회(관리자용)
+    @Override
     public List<MemberVO> selectAll() {
         List<MemberVO> list = new ArrayList<>();
         String sql = "SELECT * FROM MEMBERS ORDER BY CREATED_AT DESC";
@@ -108,6 +111,7 @@ public class MemberDAO {
     }
     
     //닉네임 수정
+    @Override
     public void updateNickname(String memberId, String newNickname) {
         String sql = "UPDATE MEMBERS SET NICKNAME = ? WHERE MEMBER_ID = ?";
         Connection conn = null;
@@ -128,6 +132,7 @@ public class MemberDAO {
     }
     
     //비번 변경
+    @Override
     public void updatePassword(String memberId, String newPassword) {
         String sql = "UPDATE MEMBERS SET PASSWORD = ? WHERE MEMBER_ID = ?";
         Connection conn = null;
@@ -147,6 +152,7 @@ public class MemberDAO {
         }
     }
     //비밀번호 확인
+    @Override
     public boolean checkPassword(String memberId, String currentPassword) {
         String sql = "SELECT COUNT(*) FROM members WHERE member_id = ? AND password = ?";
         Connection conn = null;
@@ -173,6 +179,7 @@ public class MemberDAO {
     }
 
     // 회원 탈퇴
+    @Override
     public void deleteMember(String memberId) {
         String sql = "DELETE FROM MEMBERS WHERE MEMBER_ID = ?";
         Connection conn = null;
@@ -192,6 +199,7 @@ public class MemberDAO {
     }
     
     //특정 회원 정보 조회
+    @Override
     public MemberVO selectById(String memberId) {
         String sql = "SELECT * FROM MEMBERS WHERE MEMBER_ID = ?";
         Connection conn = null;

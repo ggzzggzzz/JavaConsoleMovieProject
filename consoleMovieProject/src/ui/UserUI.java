@@ -1,17 +1,16 @@
 package ui;
 
-import java.util.Scanner;
 import vo.MemberVO;
 
-public class UserUI {
+public class UserUI extends BaseUI {
 
     private MemberVO loginUser;
-    private Scanner sc = new Scanner(System.in);
 
     public UserUI(MemberVO loginUser) {
         this.loginUser = loginUser;
     }
 
+    @Override
     public void start() {
         while (true) {
             System.out.println();
@@ -23,18 +22,10 @@ public class UserUI {
             System.out.println("  [2] 📝 내 리뷰 관리");
             System.out.println("  [3] 💖 찜 목록");
             System.out.println("  [4] 🧑‍💻 마이페이지");
-            System.out.println("  [5] 🎟️ 예매 서비스");
             System.out.println("  [0] 🔓 로그아웃");
             System.out.println();
-            System.out.print("👉 메뉴 선택 : ");
-
-            int choice;
-            try {
-                choice = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("⚠️ 숫자를 입력해주세요.");
-                continue;
-            }
+            
+            int choice = getInt("👉 메뉴 선택 : ");
 
             switch (choice) {
                 case 1:
@@ -49,9 +40,6 @@ public class UserUI {
                 case 4:
                     new MyPageUI(loginUser).start();
                     break;
-                case 5:
-                	new ReservationUI(loginUser).start();
-                    break;
                 case 0:
                     System.out.println("\n👋 로그아웃되었습니다.");
                     return;
@@ -61,3 +49,4 @@ public class UserUI {
         }
     }
 }
+

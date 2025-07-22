@@ -1,14 +1,14 @@
 package ui;
 
-import java.util.Scanner;
+import service.IMemberService;
 import service.MemberService;
 import vo.MemberVO;
 
-public class LoginUI {
+public class LoginUI extends BaseUI {
 
-    private MemberService memberService = MemberService.getInstance();
-    private Scanner sc = new Scanner(System.in);
+    private IMemberService memberService = MemberService.getInstance();
 
+    @Override
     public void start() {
         while (true) {
             System.out.println("╔═══════════════════════════════════════╗");
@@ -19,15 +19,8 @@ public class LoginUI {
             System.out.println("  [2] 📝 회원가입");
             System.out.println("  [0] ❌ 종료");
             System.out.println();
-            System.out.print("👉 메뉴 선택 : ");
-
-            int choice;
-            try {
-                choice = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("⚠️ 숫자를 입력해주세요!");
-                continue;
-            }
+            
+            int choice = getInt("👉 메뉴 선택 : ");
 
             switch (choice) {
                 case 1: login(); break;
@@ -44,10 +37,8 @@ public class LoginUI {
     private void login() {
         System.out.println();
         System.out.println("========== 🔐 로그인 페이지 ==========");
-        System.out.print("👤 아이디 입력: ");
-        String id = sc.nextLine();
-        System.out.print("🔑 비밀번호 입력: ");
-        String pw = sc.nextLine();
+        String id = getString("👤 아이디 입력: ");
+        String pw = getString("🔑 비밀번호 입력: ");
 
         MemberVO loginUser = memberService.login(id, pw);
 

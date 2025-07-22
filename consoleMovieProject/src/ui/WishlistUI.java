@@ -1,22 +1,21 @@
 package ui;
 
 import java.util.List;
-import java.util.Scanner;
-
+import service.IWishlistService;
 import service.WishlistService;
 import vo.MemberVO;
 import vo.WishlistVO;
 
-public class WishlistUI {
+public class WishlistUI extends BaseUI {
 
-    private WishlistService wishlistService = WishlistService.getInstance();
+    private IWishlistService wishlistService = WishlistService.getInstance();
     private MemberVO loginUser;
-    private Scanner sc = new Scanner(System.in);
 
     public WishlistUI(MemberVO loginUser) {
         this.loginUser = loginUser;
     }
 
+    @Override
     public void start() {
         while (true) {
             System.out.println();
@@ -29,15 +28,8 @@ public class WishlistUI {
             System.out.println("  [3] 🗑️ 찜 삭제");
             System.out.println("  [0] ↩️ 뒤로가기");
             System.out.println();
-            System.out.print("👉 선택 > ");
-
-            int choice;
-            try {
-                choice = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("⚠️ 숫자를 입력해주세요.");
-                continue;
-            }
+            
+            int choice = getInt("👉 선택 > ");
 
             switch (choice) {
                 case 1: viewWishlist(); break;
@@ -70,9 +62,8 @@ public class WishlistUI {
     }
 
     private void addWishlist() {
-        System.out.println("\n➕ 영화 찜 추가");
-        System.out.print("🎬 영화 ID 입력: ");
-        int movieId = Integer.parseInt(sc.nextLine());
+        System.out.println("\n➕ 영화 찜 ���가");
+        int movieId = getInt("🎬 영화 ID 입력: ");
 
         boolean already = wishlistService.isMovieWishlisted(loginUser.getMemberId(), movieId);
         if (already) {
@@ -88,8 +79,7 @@ public class WishlistUI {
 
     private void deleteWishlist() {
         System.out.println("\n🗑️ 찜 삭제");
-        System.out.print("🎬 삭제할 영화 ID 입력: ");
-        int movieId = Integer.parseInt(sc.nextLine());
+        int movieId = getInt("🎬 삭제할 영화 ID 입력: ");
         wishlistService.removeWishlist(loginUser.getMemberId(), movieId);
         System.out.println("🗑️ 찜 삭제 완료!");
     }

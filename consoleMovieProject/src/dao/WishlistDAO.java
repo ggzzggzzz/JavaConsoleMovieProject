@@ -10,7 +10,7 @@ import util.ConnectionFactory;
 import util.JDBCClose;
 import vo.WishlistVO;
 
-public class WishlistDAO {
+public class WishlistDAO implements IWishlistDAO {
 
 	private static final WishlistDAO instance = new WishlistDAO();
 
@@ -21,6 +21,7 @@ public class WishlistDAO {
     }
 	
     // 찜 추가
+    @Override
     public void insert(WishlistVO vo) {
         String sql = "INSERT INTO WISHLISTS(WISHLIST_ID, MEMBER_ID, MOVIE_ID) "
                    + "VALUES (seq_wishlist_id.NEXTVAL, ?, ?)";
@@ -44,6 +45,7 @@ public class WishlistDAO {
 
 
     // 찜 삭제
+    @Override
     public void delete(String memberId, int movieId) {
         String sql = "DELETE FROM WISHLISTS WHERE MEMBER_ID = ? AND MOVIE_ID = ?";
         Connection conn = null;
@@ -65,6 +67,7 @@ public class WishlistDAO {
     }
 
     // 찜한 영화 목록 보기 
+    @Override
     public List<WishlistVO> selectByMember(String memberId) {
         List<WishlistVO> list = new ArrayList<>();
         String sql = "SELECT * FROM WISHLISTS WHERE MEMBER_ID = ? ORDER BY CREATED_AT DESC";
@@ -96,6 +99,7 @@ public class WishlistDAO {
     }
 
     // 이미 찜한 영화인지 확인(중복 방지)
+    @Override
     public boolean isWishlisted(String memberId, int movieId) {
         String sql = "SELECT COUNT(*) AS cnt FROM WISHLISTS WHERE MEMBER_ID = ? AND MOVIE_ID = ?";
         Connection conn = null;

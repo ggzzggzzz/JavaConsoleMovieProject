@@ -1,21 +1,21 @@
 package ui;
 
 import java.util.List;
-import java.util.Scanner;
+import service.IReviewService;
 import service.ReviewService;
 import vo.MemberVO;
 import vo.ReviewVO;
 
-public class ReviewUI {
+public class ReviewUI extends BaseUI {
 
-    private ReviewService reviewService = ReviewService.getInstance();
+    private IReviewService reviewService = ReviewService.getInstance();
     private MemberVO loginUser;
-    private Scanner sc = new Scanner(System.in);
 
     public ReviewUI(MemberVO loginUser) {
         this.loginUser = loginUser;
     }
 
+    @Override
     public void start() {
         while (true) {
             System.out.println();
@@ -29,15 +29,8 @@ public class ReviewUI {
             System.out.println("  [4] ❌ 리뷰 삭제");
             System.out.println("  [0] ↩️ 뒤로가기");
             System.out.println();
-            System.out.print("👉 선택 > ");
-
-            int choice;
-            try {
-                choice = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("⚠️ 숫자를 입력해주세요.");
-                continue;
-            }
+            
+            int choice = getInt("👉 선택 > ");
 
             switch (choice) {
                 case 1: writeReview(); break;
@@ -55,12 +48,13 @@ public class ReviewUI {
 
     private void writeReview() {
         System.out.println("\n✍️ 리뷰 작성");
-        System.out.print("🎬 영화 ID 입력: ");
-        int movieId = Integer.parseInt(sc.nextLine());
+        int movieId = getInt("🎬 영화 ID 입력: ");
+        
+        // 평점은 getInt로 받기에는 소수점 처리가 필요하므로 기존 방식 유지
         System.out.print("⭐ 평점 (0~10): ");
         double rating = Double.parseDouble(sc.nextLine());
-        System.out.print("📝 리뷰 내용: ");
-        String content = sc.nextLine();
+
+        String content = getString("📝 리뷰 내용: ");
 
         ReviewVO vo = new ReviewVO(1, loginUser.getMemberId(), movieId, rating, content, 0, null);
         reviewService.addReview(vo);
@@ -87,12 +81,12 @@ public class ReviewUI {
 
     private void updateReview() {
         System.out.println("\n✏️ 리뷰 수정");
-        System.out.print("🆔 수정할 리뷰 ID: ");
-        int id = Integer.parseInt(sc.nextLine());
+        int id = getInt("🆔 수정할 리뷰 ID: ");
+        
         System.out.print("⭐ 새 평점: ");
         double rating = Double.parseDouble(sc.nextLine());
-        System.out.print("📝 새 내용: ");
-        String content = sc.nextLine();
+        
+        String content = getString("📝 새 내용: ");
 
         ReviewVO vo = new ReviewVO();
         vo.setReviewId(id);
@@ -105,8 +99,7 @@ public class ReviewUI {
 
     private void deleteReview() {
         System.out.println("\n❌ 리뷰 삭제");
-        System.out.print("🆔 삭제할 리뷰 ID: ");
-        int id = Integer.parseInt(sc.nextLine());
+        int id = getInt("🆔 삭제할 리뷰 ID: ");
         reviewService.deleteReview(id);
         System.out.println("🗑️ 리뷰 삭제 완료!");
     }

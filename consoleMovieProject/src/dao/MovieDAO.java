@@ -10,7 +10,7 @@ import util.ConnectionFactory;
 import util.JDBCClose;
 import vo.MovieVO;
 
-public class MovieDAO {
+public class MovieDAO implements IMovieDAO {
 	
 	 private static final MovieDAO instance = new MovieDAO();
 
@@ -21,6 +21,7 @@ public class MovieDAO {
 	    }
 
 	// 영화 등록(관리자용)
+	    @Override
 	    public void insert(MovieVO vo) {
 	        String sql = "INSERT INTO MOVIES(MOVIE_ID, TITLE, GENRE, DIRECTOR, RUNNING_TIME, RELEASE_DATE, SYNOPSIS) "
 	                   + "VALUES (seq_movie_id.NEXTVAL, ?, ?, ?, ?, ?, ?)";
@@ -48,6 +49,7 @@ public class MovieDAO {
 
 
     // 영화삭제(관리자용)
+    @Override
     public void delete(int movieId) {
         String sql = "DELETE FROM MOVIES WHERE MOVIE_ID = ?";
         Connection conn = null;
@@ -67,9 +69,10 @@ public class MovieDAO {
     }
 
     // 모든영화 조회
+    @Override
     public List<MovieVO> selectAll() {
         List<MovieVO> list = new ArrayList<>();
-        String sql = "SELECT * FROM MOVIES ";
+        String sql = "SELECT * FROM MOVIES ORDER BY MOVIE_ID";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -103,6 +106,7 @@ public class MovieDAO {
     
     //특정 영화 조회
 
+    @Override
     public MovieVO selectById(int movieId) {
         String sql = "SELECT * FROM MOVIES WHERE MOVIE_ID = ?";
         Connection conn = null;
@@ -138,6 +142,7 @@ public class MovieDAO {
     
     //제목으로 영화 검색
 
+    @Override
     public List<MovieVO> searchByTitle(String keyword) {
         List<MovieVO> list = new ArrayList<>();
         String sql = "SELECT * FROM MOVIES WHERE TITLE LIKE ? ORDER BY CREATED_AT DESC";
@@ -174,6 +179,7 @@ public class MovieDAO {
     }
 
     //장르로 영화 검색
+    @Override
     public List<MovieVO> serchByGenre(String genre) {
         List<MovieVO> list = new ArrayList<>();
         String sql = "SELECT * FROM MOVIES WHERE GENRE = ? ORDER BY CREATED_AT DESC";
