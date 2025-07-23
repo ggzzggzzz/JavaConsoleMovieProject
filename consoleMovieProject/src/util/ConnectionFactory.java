@@ -18,11 +18,9 @@ public class ConnectionFactory {
 			String user 	= "hr";
 			String password = "hr";
 			
-			conn = DriverManager.getConnection(url, user, password);
+						 conn = DriverManager.getConnection(url, user, password);
 			 if (conn == null) {
 			        System.out.println("❌ DB 연결 실패: conn is null");
-			    } else {
-			        System.out.println("✅ DB 연결 성공");
 			    }
 		} catch(Exception e) {
 			e.printStackTrace();
