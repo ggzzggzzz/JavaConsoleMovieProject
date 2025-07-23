@@ -8,4 +8,5 @@ public interface IWishlistDAO {
     void delete(String memberId, int movieId);
     List<WishlistVO> selectByMember(String memberId);
     boolean isWishlisted(String memberId, int movieId);
+    int countWishesByMovieId(int movieId); // 추가된 메소드
 }

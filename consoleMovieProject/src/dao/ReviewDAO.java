@@ -49,8 +49,8 @@ public class ReviewDAO implements IReviewDAO {
 
     // 리뷰 수정
     @Override
-    public void update(ReviewVO vo) {
-        String sql = "UPDATE REVIEWS SET CONTENT = ?, RATING = ? WHERE REVIEW_ID = ?";
+    public void update(ReviewVO vo, String memberId) {
+        String sql = "UPDATE REVIEWS SET CONTENT = ?, RATING = ? WHERE REVIEW_ID = ? AND MEMBER_ID = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -60,6 +60,7 @@ public class ReviewDAO implements IReviewDAO {
             pstmt.setString(1, vo.getContent());
             pstmt.setDouble(2, vo.getRating());
             pstmt.setInt(3, vo.getReviewId());
+            pstmt.setString(4, memberId);
 
             pstmt.executeUpdate();
         } catch (Exception e) {
@@ -71,8 +72,8 @@ public class ReviewDAO implements IReviewDAO {
 
     // 리뷰 삭제
     @Override
-    public void delete(int reviewId) {
-        String sql = "DELETE FROM REVIEWS WHERE REVIEW_ID = ?";
+    public void delete(int reviewId, String memberId) {
+        String sql = "DELETE FROM REVIEWS WHERE REVIEW_ID = ? AND MEMBER_ID = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -80,6 +81,7 @@ public class ReviewDAO implements IReviewDAO {
             conn = new ConnectionFactory().getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, reviewId);
+            pstmt.setString(2, memberId);
 
             pstmt.executeUpdate();
         } catch (Exception e) {
@@ -165,6 +167,26 @@ public class ReviewDAO implements IReviewDAO {
     @Override
     public void increaseLike(int reviewId) {
         String sql = "UPDATE REVIEWS SET LIKE_COUNT = LIKE_COUNT + 1 WHERE REVIEW_ID = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = new ConnectionFactory().getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reviewId);
+
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCClose.close(conn, pstmt);
+        }
+    }
+
+    // 좋아요 취소(감소) 메소드 구현
+    @Override
+    public void decreaseLike(int reviewId) {
+        String sql = "UPDATE REVIEWS SET LIKE_COUNT = CASE WHEN LIKE_COUNT > 0 THEN LIKE_COUNT - 1 ELSE 0 END WHERE REVIEW_ID = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
 

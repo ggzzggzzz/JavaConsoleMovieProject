@@ -125,4 +125,30 @@ public class WishlistDAO implements IWishlistDAO {
 
         return exists;
     }
+
+    // 추가된 메소드 구현
+    @Override
+    public int countWishesByMovieId(int movieId) {
+        String sql = "SELECT COUNT(*) FROM WISHLISTS WHERE MOVIE_ID = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        int count = 0;
+
+        try {
+            conn = new ConnectionFactory().getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, movieId);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCClose.close(conn, pstmt);
+        }
+
+        return count;
+    }
 }

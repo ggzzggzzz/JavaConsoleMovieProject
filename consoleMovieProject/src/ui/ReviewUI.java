@@ -27,6 +27,7 @@ public class ReviewUI extends BaseUI {
             System.out.println("  [2] 📄 내가 쓴 리뷰 보기");
             System.out.println("  [3] ✏️ 리뷰 수정");
             System.out.println("  [4] ❌ 리뷰 삭제");
+            System.out.println("  [5] 👍 리뷰 좋아요 토글");
             System.out.println("  [0] ↩️ 뒤로가기");
             System.out.println();
             
@@ -37,6 +38,7 @@ public class ReviewUI extends BaseUI {
                 case 2: viewMyReviews(); break;
                 case 3: updateReview(); break;
                 case 4: deleteReview(); break;
+                case 5: toggleLike(); break;
                 case 0:
                     System.out.println("🔙 리뷰 메뉴를 종료합니다.");
                     return;
@@ -46,11 +48,21 @@ public class ReviewUI extends BaseUI {
         }
     }
 
+    private void toggleLike() {
+        System.out.println("\n👍👎 리뷰 좋아요 토글");
+        int id = getInt("🆔 토글할 리뷰 ID: ");
+        boolean isLiked = reviewService.toggleReviewLike(id, loginUser.getMemberId());
+        if (isLiked) {
+            System.out.println("✅ 좋아요 처리 완료!");
+        } else {
+            System.out.println("✅ 좋아요 취소 완료!");
+        }
+    }
+
     private void writeReview() {
         System.out.println("\n✍️ 리뷰 작성");
         int movieId = getInt("🎬 영화 ID 입력: ");
         
-        // 평점은 getInt로 받기에는 소수점 처리가 필요하므로 기존 방식 유지
         System.out.print("⭐ 평점 (0~10): ");
         double rating = Double.parseDouble(sc.nextLine());
 
@@ -73,8 +85,8 @@ public class ReviewUI extends BaseUI {
         }
 
         for (ReviewVO r : list) {
-            System.out.printf("🆔 %d | 🎬 영화: %s | ⭐ 평점: %.1f\n📝 내용: %s\n",
-                    r.getReviewId(), r.getMovieId(), r.getRating(), r.getContent());
+            System.out.printf("🆔 %d | 🎬 영화 ID: %d | ⭐ 평점: %.1f | 👍 좋아요: %d\n📝 내용: %s\n",
+                    r.getReviewId(), r.getMovieId(), r.getRating(), r.getLikeCount(), r.getContent());
             System.out.println("────────────────────────────────────────");
         }
     }
@@ -93,14 +105,14 @@ public class ReviewUI extends BaseUI {
         vo.setRating(rating);
         vo.setContent(content);
 
-        reviewService.updateReview(vo);
+        reviewService.updateReview(vo, loginUser.getMemberId());
         System.out.println("✅ 리뷰 수정 완료!");
     }
 
     private void deleteReview() {
         System.out.println("\n❌ 리뷰 삭제");
         int id = getInt("🆔 삭제할 리뷰 ID: ");
-        reviewService.deleteReview(id);
+        reviewService.deleteReview(id, loginUser.getMemberId());
         System.out.println("🗑️ 리뷰 삭제 완료!");
     }
 }

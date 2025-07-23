@@ -24,8 +24,7 @@ public class WishlistUI extends BaseUI {
             System.out.println("╚════════════════════════════╝");
             System.out.println();
             System.out.println("  [1] 📋 찜한 영화 목록 보기");
-            System.out.println("  [2] ➕ 영화 찜 추가");
-            System.out.println("  [3] 🗑️ 찜 삭제");
+            System.out.println("  [2] 💖 영화 찜하기/취소");
             System.out.println("  [0] ↩️ 뒤로가기");
             System.out.println();
             
@@ -33,8 +32,7 @@ public class WishlistUI extends BaseUI {
 
             switch (choice) {
                 case 1: viewWishlist(); break;
-                case 2: addWishlist(); break;
-                case 3: deleteWishlist(); break;
+                case 2: toggleWishlist(); break;
                 case 0:
                     System.out.println("🔙 찜 메뉴를 종료합니다.");
                     return;
@@ -61,26 +59,17 @@ public class WishlistUI extends BaseUI {
         System.out.println("────────────────────────────────────────");
     }
 
-    private void addWishlist() {
-        System.out.println("\n➕ 영화 찜 ���가");
+    private void toggleWishlist() {
+        System.out.println("\n💖 영화 찜하기/취소");
         int movieId = getInt("🎬 영화 ID 입력: ");
 
-        boolean already = wishlistService.isMovieWishlisted(loginUser.getMemberId(), movieId);
-        if (already) {
-            System.out.println("⚠️ 이미 찜한 영화입니다.");
-            return;
-        }
-
         WishlistVO vo = new WishlistVO(0, loginUser.getMemberId(), movieId, null);
-        wishlistService.addWishlist(vo);
+        boolean added = wishlistService.toggleWishlist(vo);
 
-        System.out.println("✅ 찜 완료!");
-    }
-
-    private void deleteWishlist() {
-        System.out.println("\n🗑️ 찜 삭제");
-        int movieId = getInt("🎬 삭제할 영화 ID 입력: ");
-        wishlistService.removeWishlist(loginUser.getMemberId(), movieId);
-        System.out.println("🗑️ 찜 삭제 완료!");
+        if (added) {
+            System.out.println("✅ 찜 목록에 추가되었습니다!");
+        } else {
+            System.out.println("🗑️ 찜 목록에서 삭제되었습니다.");
+        }
     }
 }

@@ -19,13 +19,17 @@ public class WishlistService implements IWishlistService {
     }
 
     @Override
-    public void addWishlist(WishlistVO wishlist) {
-        wishlistDao.insert(wishlist);
-    }
-
-    @Override
-    public void removeWishlist(String memberId, int movieId) {
-        wishlistDao.delete(memberId, movieId);
+    public boolean toggleWishlist(WishlistVO wishlist) {
+        // 이미 찜한 영화인지 확인
+        if (wishlistDao.isWishlisted(wishlist.getMemberId(), wishlist.getMovieId())) {
+            // 찜 되어 있으면 삭제
+            wishlistDao.delete(wishlist.getMemberId(), wishlist.getMovieId());
+            return false; // 찜 취소됨
+        } else {
+            // 찜 안되어 있으면 추가
+            wishlistDao.insert(wishlist);
+            return true; // 찜 추가됨
+        }
     }
 
     @Override
@@ -36,5 +40,10 @@ public class WishlistService implements IWishlistService {
     @Override
     public boolean isMovieWishlisted(String memberId, int movieId) {
         return wishlistDao.isWishlisted(memberId, movieId);
+    }
+
+    @Override
+    public int getWishlistCountForMovie(int movieId) {
+        return wishlistDao.countWishesByMovieId(movieId);
     }
 }
