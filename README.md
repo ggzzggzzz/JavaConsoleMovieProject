@@ -61,7 +61,18 @@
   - 신규 영화 등록 및 기존 영화 삭제
   - 전체 회원 목록 조회
 
+
+    
+## 🛠️ 기술 스택
+| 구분 | 기술 |
+|------|------|
+| **Language** | Java |
+| **Database** | Oracle DB |
+| **Connectivity**| JDBC |
+| **Environment** | Console / Terminal |
+
 ## ⚙️ 시작 가이드
+
 
 ### 사전 요구사항
 - **Java Development Kit (JDK)** 8 이상
@@ -152,32 +163,9 @@ CREATE SEQUENCE seq_review_id
 ```
 </details>
 
-### 2. 소스코드 컴파일
-`src` 디렉토리의 모든 Java 파일을 컴파일하여 `bin` 디렉토리에 클래스 파일을 생성합니다.
 
-```bash
-# bin 디렉토리가 없다면 생성
-mkdir bin
 
-# 컴파일 실행
-javac -d bin src/**/*.java
-```
 
-### 3. 애플리케이션 실행
-컴파일된 클래스 파일과 Oracle JDBC 드라이버를 클래스패스에 추가하여 메인 클래스를 실행합니다.
-
-```bash
-# ojdbc.jar 파일의 실제 경로로 수정해야 합니다.
-java -cp "bin;C:\path\to\ojdbc.jar" main.ConsoleMovieMain
-```
-
-## 🛠️ 기술 스택
-| 구분 | 기술 |
-|------|------|
-| **Language** | Java |
-| **Database** | Oracle DB |
-| **Connectivity**| JDBC |
-| **Environment** | Console / Terminal |
 
 ## 🏛️ 아키텍처 및 디렉토리 구조
 이 프로젝트는 데이터 접근, 비즈니스 로직, 사용자 인터페이스를 분리하는 **3-Tier 계층형 아키텍처**를 따릅니다.
